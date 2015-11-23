@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	/* @-webkit-keyframes test{
+		from{-webkit-transform:translateX(0px);}
+		to{-webkit-transform:translateX(-500px);}
+	} */
+		#box{ width:500px; height:30px; margin:100px auto;overflow: hidden; border-radius:10px;}
+		.div{ width:1200px; height:100%; background: -webkit-repeating-linear-gradient(-30deg,red 0px,red 10px,green 10px,green 20px);
+			/* -webkit-animation:test  5s linear infinite; */
+		}
+	</style>
+	<script>
+	window.onload=function(){
+		var oDiv=document.querySelector('.div');
+		var left=0;
+		setInterval(function(){
+			left-=3;
+			if(left<-500){
+				left=0;
+			}
+			
+			oDiv.style.WebkitTransform='translateX('+left+'px)';
+		},30);
+	};
+	</script>
+</head>
+<body>
+	<div id="box">
+		<div class="div"></div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	*{margin:0; padding:0; list-style:none;}
+	body{ background: #000;}
+		ul{width:133px; height:200px; position: relative; left:0; top:0; margin:100px auto;
+			-webkit-transform-style:preserve-3d;
+			-webkit-transform:perspective(800px) rotateX(-15deg) rotateY(0deg);
+			-webkit-transition:1s all ease;
+		}
+		li{ width:100%; height:100%; position:absolute; left:0; top:0;-webkit-transition:1s all ease;}
+		img{ width:100%; height:100%;}
+	</style>
+	<script>
+	window.onload=function(){
+		var oUl=document.querySelector('ul');
+		var aLi=oUl.children;
+
+		var i=aLi.length-1;
+		var timer=setInterval(function(){
+			aLi[i].style.WebkitTransform='rotateY('+i*360/aLi.length+'deg) translateZ(305px)';
+			i--;
+			if(i<0){
+				clearInterval(timer);
+			}
+		},100);
+
+		var x=150;
+		var y=0;
+		var speedX=0;
+		var speedY=0;
+		var lastX=0;
+		var lastY=0;
+		var left=false;
+		var right=false;
+		var top=false;
+		var bottom=false;
+		setInterval(function(){
+			if(left){
+				y-=10;
+				oUl.style.WebkitTransform='perspective(800px) rotateX('+x/10+'deg) rotateY('+y/10+'deg)';
+			}
+			if(right){
+				y+=10;
+				oUl.style.WebkitTransform='perspective(800px) rotateX('+x/10+'deg) rotateY('+y/10+'deg)';
+			}
+			if(top){
+				x+=10;
+				oUl.style.WebkitTransform='perspective(800px) rotateX('+x/10+'deg) rotateY('+y/10+'deg)';
+			}
+			if(bottom){
+				x-=10;
+				oUl.style.WebkitTransform='perspective(800px) rotateX('+x/10+'deg) rotateY('+y/10+'deg)';
+			}
+		},30);
+		document.onkeydown=function(ev){
+			switch(ev.keyCode){
+				case 37:
+				left=true;
+					break;
+
+				case 38:
+				top=true;
+					break;
+
+				case 39:
+				right=true;
+					break;
+
+				case 40:
+				bottom=true;
+					break;
+			}
+		};
+		document.onkeyup=function(ev){
+			switch(ev.keyCode){
+				case 37:
+				left=false;
+					break;
+
+				case 38:
+				top=false;
+					break;
+
+				case 39:
+				right=false;
+					break;
+
+				case 40:
+				bottom=false;
+					break;
+			}
+		};
+
+		document.onmousedown=function(ev){
+			var disX=ev.clientX-y;
+			var disY=ev.clientY-x;
+			document.onmousemove=function(ev){
+				x=ev.clientY-disY;
+				y=ev.clientX-disX;
+				oUl.style.WebkitTransform='perspective(800px) rotateX(-'+x/10+'deg) rotateY('+y/10+'deg)';
+				if(x>=200){
+					x=200;
+				}
+				if(x<=200){
+					x=200;
+				}
+				speedX=x-lastX;
+				speedY=y-lastY;
+				lastX=x;
+				lastY=y;
+			};
+			var timer2=null;
+			document.onmouseup=function(){
+				//鼠标抬起的时候还得运动，这时候的运动用定时器
+				timer2=setInterval(function(){
+					x+=speedX;
+					y+=speedY;
+					speedY*=0.95;
+					speedX*=0.95;
+					oUl.style.WebkitTransform='perspective(800px) rotateX(-'+x/10+'deg) rotateY('+y/10+'deg)';
+					//这里也得限制范围
+					if(x<-200){
+						x=-200;
+					}
+					if(x>200){
+						x=200
+					}
+					//speedX和speedY都为0的时候关定时器
+					if(Math.abs(speedX)<1){
+						speedX=0;
+					}
+					if(Math.abs(speedY)<1){
+						speedY=0;
+					}
+					if(speedY==0&&speedY==0){
+						clearInterval(timer2);
+					}
+
+
+				},30);
+				document.onmouseup=null;
+				document.onmousemove=null;
+			};
+			return false;
+		};
+	};
+
+	</script>
+</head>
+<body>
+	<ul>
+		
+		<li><img src="img/7.jpg" height="200" width="133" alt=""></li>
+		<li><img src="img/2.jpg" height="200" width="133" alt=""></li>
+		<li><img src="img/3.jpg" height="200" width="133" alt=""></li>
+		<li><img src="img/4.jpg" height="200" width="133" alt=""></li>
+		<li><img src="img/5.jpg" height="200" width="133" alt=""></li>
+		<li><img src="img/6.jpg" height="200" width="133" alt=""></li>
+		<li><img src="img/1.jpg" height="200" width="133" alt=""></li>
+		<li><img src="img/8.jpg" height="200" width="133" alt=""></li>
+		<li><img src="img/9.jpg" height="200" width="133" alt=""></li>
+		<li><img src="img/10.jpg" height="200" width="133" alt=""></li>
+		<li><img src="img/11.jpg" height="200" width="133" alt=""></li>
+	</ul>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	*{margin:0; padding:0;}
+		div{width:200px; height:150px; margin:100px auto; border:1px solid #000; }
+		.box{ display: none;text-align:center;line-height:150px;background: #333;}
+		.main{ display: none; background: #eee;}
+		.main span{ background:red;}
+	</style>
+	<script>
+	window.onload=function(){
+		
+		var oBox=document.querySelector('.box');
+		var oMain=document.querySelector('.main');
+		var sName=document.querySelector('.name');
+		var sSize=document.querySelector('.size');
+		var sType=document.querySelector('.type');
+		var sScale=document.querySelector('.scale');
+		//1
+		oBox.ondragenter=function(){
+			oBox.innerHTML='放到这里';
+		};
+		//2
+		oBox.ondragleave=function(){
+			oBox.innerHTML='请把文件放到这里';
+		};
+		//3
+		oBox.ondragover=function(){
+			return false;
+		};
+		//4放下
+		oBox.ondrop=function(ev){
+			
+			oBox.style.display='none';
+			oMain.style.display='block';
+
+			//开始获取文件
+			var oFile=ev.dataTransfer.files[0];
+
+			var reader=new FileReader();
+			reader.onload=function(){
+				alert('加载完毕');
+			};
+			reader.readAsDataURL(oFile);
+			sName.innerHTML=oFile.name;
+			sSize.innerHTML=oFile.size;
+			sType.innerHTML=oFile.type;
+			reader.onprogress=function(ev){
+				
+				sScale.innerHTML=(ev.loaded*100/ev.total).toFixed(2)+'%';
+			};
+			return false;
+		};
+		//5、出现
+		var timer=null;
+		document.ondragover=function(){
+			oBox.style.display='block';
+			clearTimeout(timer);
+			timer=setTimeout(function(){
+				oBox.style.display='none';
+			},200);
+
+		};
+		document.ondrop=function(){
+			return false;
+		};
+
+	};
+	</script>
+</head>
+<body>
+
+<div class="box">请把文件放到这里</div>
+	
+
+<div class="main">
+		<p class="p"></p>
+		<span class="name"></span>
+		<span class="size"></span>
+		<span class="type"></span>	
+		<span class="scale"></span>		
+</div>
+</body>
+</html>
